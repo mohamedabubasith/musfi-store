@@ -1,23 +1,19 @@
-FROM node:20-alpine AS base
-RUN apk add --no-cache libc6-compat python3 make g++ wget curl
-RUN npm install -g pnpm@10.33.0
-
-# ---- Builder ----
-FROM base AS builder
+FROM node:20 AS builder
 WORKDIR /app
 
+RUN npm install -g pnpm@10.33.0
+
 COPY package.json .npmrc ./
-RUN pnpm install --frozen-lockfile 2>/dev/null || pnpm install
+RUN pnpm install
 
 COPY . .
 RUN pnpm build
 
 # ---- Runner ----
-FROM node:20-alpine AS runner
-RUN apk add --no-cache libc6-compat wget curl
-RUN npm install -g pnpm@10.33.0
-
+FROM node:20-slim AS runner
 WORKDIR /app
+
+RUN npm install -g pnpm@10.33.0
 
 COPY --from=builder /app /app
 
