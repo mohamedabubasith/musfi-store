@@ -7,7 +7,7 @@ COPY package.json .npmrc ./
 RUN pnpm install
 
 COPY . .
-RUN NODE_OPTIONS=--max-old-space-size=3072 pnpm build
+# .medusa/server is pre-built and committed — no need to rebuild in Docker
 
 # ---- Runner ----
 FROM node:20-slim AS runner
