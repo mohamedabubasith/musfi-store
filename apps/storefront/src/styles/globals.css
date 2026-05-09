@@ -2,6 +2,30 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/* ── Musfi Pearl Theme ─────────────────────────────────────── */
+:root {
+  --pearl-bg:      #f5f0e8;
+  --pearl-surface: #ede7d7;
+  --pearl-ink:     #1a1812;
+  --pearl-accent:  #a98147;
+  --pearl-muted:   #6b5e4a;
+  --pearl-line:    rgba(169, 129, 71, 0.18);
+  --pearl-faint:   rgba(169, 129, 71, 0.07);
+}
+
+body {
+  background-color: var(--pearl-bg);
+  color: var(--pearl-ink);
+}
+
+.font-display {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-cormorant {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {

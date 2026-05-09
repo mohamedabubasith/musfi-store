@@ -16,45 +16,66 @@ export default async function Nav() {
   ])
 
   return (
-    <div className="sticky top-0 inset-x-0 z-50 group">
-      <header className="relative h-16 mx-auto border-b duration-200 bg-white border-ui-border-base shadow-sm">
-        <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex items-center justify-between w-full h-full text-small-regular">
+    <div className="sticky top-0 inset-x-0 z-50">
+      <header
+        className="relative mx-auto duration-200"
+        style={{
+          background: "var(--pearl-bg)",
+          borderBottom: "1px solid var(--pearl-line)",
+          boxShadow: "0 1px 12px rgba(26,24,18,0.06)",
+        }}
+      >
+        <nav
+          className="content-container flex items-center justify-between w-full h-16"
+          style={{ color: "var(--pearl-muted)" }}
+        >
+          {/* Left — hamburger / side menu */}
           <div className="flex-1 basis-0 h-full flex items-center">
-            <div className="h-full">
-              <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} />
-            </div>
+            <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} />
           </div>
 
-          <div className="flex items-center h-full">
-            <LocalizedClientLink
-              href="/"
-              className="hover:opacity-80 transition-opacity"
-              data-testid="nav-store-link"
+          {/* Center — wordmark */}
+          <LocalizedClientLink
+            href="/"
+            className="flex flex-col items-center leading-none transition-opacity hover:opacity-75"
+            data-testid="nav-store-link"
+          >
+            <span
+              className="font-display tracking-[0.12em] uppercase"
+              style={{ fontSize: 22, fontWeight: 500, color: "var(--pearl-ink)", letterSpacing: "0.14em" }}
             >
-              <div className="flex flex-col items-center leading-none">
-                <span className="font-bold text-lg tracking-widest uppercase" style={{ color: "#2d1b4e", letterSpacing: "0.2em" }}>
-                  MUSFI
-                </span>
-                <span className="text-xs tracking-[0.3em] uppercase" style={{ color: "#c9a96e" }}>
-                  STORE
-                </span>
-              </div>
-            </LocalizedClientLink>
-          </div>
+              Musfi
+            </span>
+            <span
+              style={{
+                fontSize: 9,
+                letterSpacing: "0.28em",
+                textTransform: "uppercase",
+                color: "var(--pearl-accent)",
+                fontWeight: 500,
+                marginTop: 1,
+              }}
+            >
+              Modest Fashion
+            </span>
+          </LocalizedClientLink>
 
+          {/* Right — links + cart */}
           <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
-            <div className="hidden small:flex items-center gap-x-6 h-full">
+            <div className="hidden small:flex items-center gap-x-6 h-full text-sm" style={{ color: "var(--pearl-muted)" }}>
               <LocalizedClientLink
-                className="hover:text-ui-fg-base text-ui-fg-subtle transition-colors"
+                className="transition-colors hover:text-[--pearl-ink]"
                 href="/store"
                 data-testid="nav-store-link"
+                style={{ color: "var(--pearl-muted)" } as React.CSSProperties}
               >
                 Shop
               </LocalizedClientLink>
               <LocalizedClientLink
-                className="hover:text-ui-fg-base text-ui-fg-subtle transition-colors"
+                className="transition-colors hover:text-[--pearl-ink]"
                 href="/account"
                 data-testid="nav-account-link"
+                style={{ color: "var(--pearl-muted)" } as React.CSSProperties}
               >
                 Account
               </LocalizedClientLink>
@@ -62,11 +83,12 @@ export default async function Nav() {
             <Suspense
               fallback={
                 <LocalizedClientLink
-                  className="hover:text-ui-fg-base flex gap-2"
+                  className="hover:text-ui-fg-base flex gap-2 text-sm"
                   href="/cart"
                   data-testid="nav-cart-link"
+                  style={{ color: "var(--pearl-muted)" } as React.CSSProperties}
                 >
-                  Cart (0)
+                  Bag (0)
                 </LocalizedClientLink>
               }
             >
@@ -74,6 +96,9 @@ export default async function Nav() {
             </Suspense>
           </div>
         </nav>
+
+        {/* Thin gold accent line */}
+        <div style={{ height: 2, background: "linear-gradient(90deg, transparent, var(--pearl-accent), transparent)", opacity: 0.4 }} />
       </header>
     </div>
   )

@@ -68,6 +68,16 @@ module.exports = {
           "Ubuntu",
           "sans-serif",
         ],
+        display: [
+          "Playfair Display",
+          "Georgia",
+          "serif",
+        ],
+        cormorant: [
+          "Cormorant Garamond",
+          "Georgia",
+          "serif",
+        ],
       },
       keyframes: {
         ring: {

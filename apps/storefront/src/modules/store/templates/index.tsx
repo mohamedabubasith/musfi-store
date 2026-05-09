@@ -19,22 +19,40 @@ const StoreTemplate = ({
   const sort = sortBy || "created_at"
 
   return (
-    <div
-      className="flex flex-col small:flex-row small:items-start py-6 content-container"
-      data-testid="category-container"
-    >
-      <RefinementList sortBy={sort} />
-      <div className="w-full">
-        <div className="mb-8 text-2xl-semi">
-          <h1 data-testid="store-page-title">All products</h1>
+    <div style={{ background: "var(--pearl-bg)", minHeight: "80vh" }}>
+      {/* Page header */}
+      <div
+        className="content-container py-12"
+        style={{ borderBottom: "1px solid var(--pearl-line)" }}
+      >
+        <p
+          style={{ fontSize: 10, letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--pearl-accent)", fontWeight: 500, marginBottom: 8 }}
+        >
+          Shop
+        </p>
+        <h1
+          className="font-display"
+          style={{ fontSize: 36, fontWeight: 400, color: "var(--pearl-ink)", letterSpacing: "-0.02em" }}
+          data-testid="store-page-title"
+        >
+          Our Collection
+        </h1>
+      </div>
+
+      <div
+        className="flex flex-col small:flex-row small:items-start py-8 content-container gap-8"
+        data-testid="category-container"
+      >
+        <RefinementList sortBy={sort} />
+        <div className="w-full">
+          <Suspense fallback={<SkeletonProductGrid />}>
+            <PaginatedProducts
+              sortBy={sort}
+              page={pageNumber}
+              countryCode={countryCode}
+            />
+          </Suspense>
         </div>
-        <Suspense fallback={<SkeletonProductGrid />}>
-          <PaginatedProducts
-            sortBy={sort}
-            page={pageNumber}
-            countryCode={countryCode}
-          />
-        </Suspense>
       </div>
     </div>
   )

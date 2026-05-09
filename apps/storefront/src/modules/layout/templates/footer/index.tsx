@@ -1,105 +1,107 @@
-import { listCategories } from "@lib/data/categories";
-import { listCollections } from "@lib/data/collections";
-import { Text, clx } from "@modules/common/components/ui";
+import { listCategories } from "@lib/data/categories"
+import { listCollections } from "@lib/data/collections"
 
-import LocalizedClientLink from "@modules/common/components/localized-client-link";
-import MedusaCTA from "@modules/layout/components/medusa-cta";
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 export default async function Footer() {
-  const { collections } = await listCollections({
-    fields: "*products",
-  });
-  const productCategories = await listCategories();
+  const { collections } = await listCollections({ fields: "*products" })
+  const productCategories = await listCategories()
 
   return (
-    <footer className="border-t border-ui-border-base w-full">
-      <div className="content-container flex flex-col w-full">
-        <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
-          <div>
-            <LocalizedClientLink
-              href="/"
-              className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
+    <footer style={{ background: "var(--pearl-ink)", color: "var(--pearl-bg)" }}>
+      {/* Thin gold accent top */}
+      <div style={{ height: 2, background: "linear-gradient(90deg, transparent, var(--pearl-accent), transparent)", opacity: 0.5 }} />
+
+      <div className="content-container pt-16 pb-8">
+        {/* Top row */}
+        <div className="flex flex-col small:flex-row gap-12 small:gap-0 justify-between mb-16">
+
+          {/* Brand column */}
+          <div className="flex flex-col gap-4" style={{ maxWidth: 280 }}>
+            <div>
+              <p
+                className="font-display tracking-widest uppercase"
+                style={{ fontSize: 20, fontWeight: 400, color: "var(--pearl-bg)", letterSpacing: "0.12em" }}
+              >
+                Musfi
+              </p>
+              <p
+                style={{ fontSize: 9, letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--pearl-accent)", marginTop: 2, fontWeight: 500 }}
+              >
+                Modest Fashion
+              </p>
+            </div>
+            <p style={{ fontSize: 13, color: "rgba(245,240,232,0.5)", lineHeight: 1.7 }}>
+              Premium hijabs, abayas and modest clothing crafted for the modern woman. Bengaluru, India.
+            </p>
+            <a
+              href="mailto:care@musfi.in"
+              style={{ fontSize: 12, color: "var(--pearl-accent)", textDecoration: "none", letterSpacing: "0.04em" }}
+              className="hover:opacity-75 transition-opacity"
             >
-              Musfi Store
-            </LocalizedClientLink>
+              care@musfi.in
+            </a>
           </div>
-          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
-            {productCategories && productCategories?.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Categories
-                </span>
-                <ul
-                  className="grid grid-cols-1 gap-2"
-                  data-testid="footer-categories"
+
+          {/* Links columns */}
+          <div className="grid grid-cols-2 small:grid-cols-3 gap-10 text-sm">
+            {/* Categories */}
+            {productCategories && productCategories.length > 0 && (
+              <div>
+                <p
+                  style={{
+                    fontSize: 10,
+                    letterSpacing: "0.2em",
+                    textTransform: "uppercase",
+                    color: "var(--pearl-accent)",
+                    fontWeight: 500,
+                    marginBottom: 14,
+                  }}
                 >
-                  {productCategories?.slice(0, 6).map((c) => {
-                    if (c.parent_category) {
-                      return;
-                    }
-
-                    const children =
-                      c.category_children?.map((child) => ({
-                        name: child.name,
-                        handle: child.handle,
-                        id: child.id,
-                      })) || null;
-
+                  Shop
+                </p>
+                <ul className="flex flex-col gap-3">
+                  {productCategories.slice(0, 6).map((c) => {
+                    if (c.parent_category) return null
                     return (
-                      <li
-                        className="flex flex-col gap-2 text-ui-fg-subtle txt-small"
-                        key={c.id}
-                      >
+                      <li key={c.id}>
                         <LocalizedClientLink
-                          className={clx(
-                            "hover:text-ui-fg-base",
-                            children && "txt-small-plus"
-                          )}
                           href={`/categories/${c.handle}`}
+                          className="transition-opacity hover:opacity-60"
+                          style={{ fontSize: 13, color: "rgba(245,240,232,0.65)", textDecoration: "none" }}
                           data-testid="category-link"
                         >
                           {c.name}
                         </LocalizedClientLink>
-                        {children && (
-                          <ul className="grid grid-cols-1 ml-3 gap-2">
-                            {children &&
-                              children.map((child) => (
-                                <li key={child.id}>
-                                  <LocalizedClientLink
-                                    className="hover:text-ui-fg-base"
-                                    href={`/categories/${child.handle}`}
-                                    data-testid="category-link"
-                                  >
-                                    {child.name}
-                                  </LocalizedClientLink>
-                                </li>
-                              ))}
-                          </ul>
-                        )}
                       </li>
-                    );
+                    )
                   })}
                 </ul>
               </div>
             )}
+
+            {/* Collections */}
             {collections && collections.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Collections
-                </span>
-                <ul
-                  className={clx(
-                    "grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small",
-                    {
-                      "grid-cols-2": (collections?.length || 0) > 3,
-                    }
-                  )}
+              <div>
+                <p
+                  style={{
+                    fontSize: 10,
+                    letterSpacing: "0.2em",
+                    textTransform: "uppercase",
+                    color: "var(--pearl-accent)",
+                    fontWeight: 500,
+                    marginBottom: 14,
+                  }}
                 >
-                  {collections?.slice(0, 6).map((c) => (
+                  Collections
+                </p>
+                <ul className="flex flex-col gap-3">
+                  {collections.slice(0, 5).map((c) => (
                     <li key={c.id}>
                       <LocalizedClientLink
-                        className="hover:text-ui-fg-base"
                         href={`/collections/${c.handle}`}
+                        className="transition-opacity hover:opacity-60"
+                        style={{ fontSize: 13, color: "rgba(245,240,232,0.65)", textDecoration: "none" }}
                       >
                         {c.title}
                       </LocalizedClientLink>
@@ -108,34 +110,56 @@ export default async function Footer() {
                 </ul>
               </div>
             )}
-            <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">Support</span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
-                <li>
-                  <a href="mailto:support@musfi.in" className="hover:text-ui-fg-base">
-                    Contact Us
-                  </a>
-                </li>
-                <li>
-                  <a href="/in/store" className="hover:text-ui-fg-base">
-                    All Products
-                  </a>
-                </li>
-                <li>
-                  <a href="/in/account" className="hover:text-ui-fg-base">
-                    My Account
-                  </a>
-                </li>
+
+            {/* Support */}
+            <div>
+              <p
+                style={{
+                  fontSize: 10,
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: "var(--pearl-accent)",
+                  fontWeight: 500,
+                  marginBottom: 14,
+                }}
+              >
+                Help
+              </p>
+              <ul className="flex flex-col gap-3">
+                {[
+                  { label: "All Products", href: "/store" },
+                  { label: "My Account", href: "/account" },
+                  { label: "My Orders", href: "/account/orders" },
+                  { label: "Contact Us", href: "mailto:care@musfi.in" },
+                ].map(({ label, href }) => (
+                  <li key={label}>
+                    <a
+                      href={href}
+                      className="transition-opacity hover:opacity-60"
+                      style={{ fontSize: 13, color: "rgba(245,240,232,0.65)", textDecoration: "none" }}
+                    >
+                      {label}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
         </div>
-        <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
-          <Text className="txt-compact-small">
-            © {new Date().getFullYear()} Musfi Store. All rights reserved.
-          </Text>
+
+        {/* Bottom row */}
+        <div
+          className="flex flex-col small:flex-row justify-between items-center gap-4 pt-8"
+          style={{ borderTop: "1px solid rgba(169,129,71,0.2)" }}
+        >
+          <p style={{ fontSize: 12, color: "rgba(245,240,232,0.35)" }}>
+            © {new Date().getFullYear()} Musfi. All rights reserved.
+          </p>
+          <p style={{ fontSize: 12, color: "rgba(245,240,232,0.25)" }}>
+            Made with care in Bengaluru, India
+          </p>
         </div>
       </div>
     </footer>
-  );
+  )
 }
