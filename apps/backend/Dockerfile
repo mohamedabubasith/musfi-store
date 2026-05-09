@@ -7,7 +7,7 @@ COPY package.json .npmrc ./
 RUN pnpm install
 
 COPY . .
-RUN NODE_OPTIONS=--max-old-space-size=3072 pnpm build
+# .medusa/server is pre-built and committed — no need to rebuild in Docker
 
 # ---- Runner ----
 FROM node:20-slim AS runner
@@ -22,4 +22,5 @@ ENV PORT=9000
 
 EXPOSE 9000
 
-CMD ["sh", "-c", "node_modules/.bin/medusa db:migrate && node_modules/.bin/medusa start"]
+# Run from .medusa/server so medusa start finds public/admin/index.html correctly
+CMD ["sh", "-c", "node_modules/.bin/medusa db:migrate && cd /app/.medusa/server && /app/node_modules/.bin/medusa start"]
