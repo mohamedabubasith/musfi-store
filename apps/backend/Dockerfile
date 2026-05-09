@@ -7,7 +7,7 @@ COPY package.json .npmrc ./
 RUN pnpm install
 
 COPY . .
-RUN pnpm build
+RUN NODE_OPTIONS=--max-old-space-size=3072 pnpm build
 
 # ---- Runner ----
 FROM node:20-slim AS runner
