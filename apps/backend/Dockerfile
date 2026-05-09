@@ -22,5 +22,5 @@ ENV PORT=9000
 
 EXPOSE 9000
 
-# Migrations then start (admin is built during Docker image build via pnpm build)
-CMD ["sh", "-c", "node_modules/.bin/medusa db:migrate && node_modules/.bin/medusa start"]
+# Run from .medusa/server so medusa start finds public/admin/index.html correctly
+CMD ["sh", "-c", "node_modules/.bin/medusa db:migrate && cd /app/.medusa/server && /app/node_modules/.bin/medusa start"]
