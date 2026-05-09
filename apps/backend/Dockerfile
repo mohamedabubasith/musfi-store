@@ -22,5 +22,5 @@ ENV PORT=9000
 
 EXPOSE 9000
 
-# Build admin if not already built, run migrations, then start
-CMD ["sh", "-c", "node_modules/.bin/medusa build && node_modules/.bin/medusa db:migrate && node_modules/.bin/medusa start"]
+# Migrations then start (admin is built during Docker image build via pnpm build)
+CMD ["sh", "-c", "node_modules/.bin/medusa db:migrate && node_modules/.bin/medusa start"]
