@@ -17,7 +17,7 @@ export default async function Nav() {
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
-      <header className="relative h-16 mx-auto border-b duration-200 bg-white border-ui-border-base">
+      <header className="relative h-16 mx-auto border-b duration-200 bg-white border-ui-border-base shadow-sm">
         <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex items-center justify-between w-full h-full text-small-regular">
           <div className="flex-1 basis-0 h-full flex items-center">
             <div className="h-full">
@@ -28,17 +28,31 @@ export default async function Nav() {
           <div className="flex items-center h-full">
             <LocalizedClientLink
               href="/"
-              className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
+              className="hover:opacity-80 transition-opacity"
               data-testid="nav-store-link"
             >
-              Musfi Store
+              <div className="flex flex-col items-center leading-none">
+                <span className="font-bold text-lg tracking-widest uppercase" style={{ color: "#2d1b4e", letterSpacing: "0.2em" }}>
+                  MUSFI
+                </span>
+                <span className="text-xs tracking-[0.3em] uppercase" style={{ color: "#c9a96e" }}>
+                  STORE
+                </span>
+              </div>
             </LocalizedClientLink>
           </div>
 
           <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
             <div className="hidden small:flex items-center gap-x-6 h-full">
               <LocalizedClientLink
-                className="hover:text-ui-fg-base"
+                className="hover:text-ui-fg-base text-ui-fg-subtle transition-colors"
+                href="/store"
+                data-testid="nav-store-link"
+              >
+                Shop
+              </LocalizedClientLink>
+              <LocalizedClientLink
+                className="hover:text-ui-fg-base text-ui-fg-subtle transition-colors"
                 href="/account"
                 data-testid="nav-account-link"
               >
