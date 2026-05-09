@@ -1,0 +1,56 @@
+version: "3.8"
+
+# Musfi Store — Coolify Deployment
+# Backend API + Admin: api.musfi.basivo.in:9000
+# Storefront: musfi.basivo.in:8000
+# External PostgreSQL: 10.0.1.9:5432
+# External Redis: 10.0.1.15:6379
+
+services:
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    container_name: musfi-store-backend
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
+      REDIS_URL: ${REDIS_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      COOKIE_SECRET: ${COOKIE_SECRET}
+      STORE_CORS: ${STORE_CORS:-https://musfi.basivo.in}
+      ADMIN_CORS: ${ADMIN_CORS:-https://api.musfi.basivo.in}
+      AUTH_CORS: ${AUTH_CORS:-https://api.musfi.basivo.in,https://musfi.basivo.in}
+      MEDUSA_ADMIN_ONBOARDING_TYPE: nextjs
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9000/health"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 90s
+
+  storefront:
+    build:
+      context: ./apps/storefront
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: ${NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY}
+        NEXT_PUBLIC_MEDUSA_BACKEND_URL: ${NEXT_PUBLIC_MEDUSA_BACKEND_URL:-https://api.musfi.basivo.in}
+        NEXT_PUBLIC_DEFAULT_REGION: ${NEXT_PUBLIC_DEFAULT_REGION:-in}
+        NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL:-https://musfi.basivo.in}
+    container_name: musfi-store-storefront
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY: ${NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY}
+      NEXT_PUBLIC_MEDUSA_BACKEND_URL: ${NEXT_PUBLIC_MEDUSA_BACKEND_URL:-https://api.musfi.basivo.in}
+      NEXT_PUBLIC_DEFAULT_REGION: ${NEXT_PUBLIC_DEFAULT_REGION:-in}
+      NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL:-https://musfi.basivo.in}
+    depends_on:
+      backend:
+        condition: service_healthy

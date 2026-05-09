@@ -1,0 +1,10 @@
+node_modules
+.medusa
+dist
+.env
+.env.*
+!.env.template
+*.log
+.git
+.gitignore
+README.md
